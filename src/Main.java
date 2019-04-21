@@ -1,7 +1,42 @@
-public class Main {
+import java.util.Scanner;
+
+class Main {
 
     public static void main(String[] args) {
-	// input schtuff
+        Scanner in = new Scanner(System.in);
+        BinarySearchTree tree = new BinarySearchTree();
+        boolean done = false;
+        while (!done && in.hasNextLine()){
+            String line = in.nextLine();
+            Scanner ls = new Scanner(line);
+            String token = ls.next();
+            switch (token.toUpperCase()){
+                case "INSERT":
+                    while (ls.hasNext()){
+                        tree.insert(ls.nextInt(), ls.next().charAt(0));
+                    }
+                    break;
+                case "DELETE":
+                    while (ls.hasNext()){
+                        tree.delete(ls.nextInt());
+                    }
+                    break;
+                case "PREORDER":
+                    tree.preorder();
+                    break;
+                case "INORDER":
+                    tree.inorder();
+                    break;
+                case "POSTORDER":
+                    tree.postorder();
+                    break;
+                case "EXIT":
+                    ls.close();
+                    done = true;
+                    break;
+            }
+        }
+        in.close();
     }
 }
 
@@ -39,9 +74,9 @@ class BinarySearchTree{
     private Node delete(Node root, int key){
         if (root == null) return null;
         if (root.key - key > 0)
-            root.left = remove(root.left, key);
+            root.left = delete(root.left, key);
         if (root.key - key < 0)
-            root.right = remove(root.right, key);
+            root.right = delete(root.right, key);
         else{ //found node to remove
             if (root.left == null) return root.right;
             if (root.right == null) return root.left;
@@ -82,6 +117,7 @@ class BinarySearchTree{
     }
 
     void preorder(){
+        preorder(root);
         System.out.println();
     }
 
