@@ -45,6 +45,7 @@ class BinarySearchTree{
         private char data;
         private int key;
         Node left, right;
+        Node p;
 
         Node(int k, char d){
             key = k;
@@ -52,7 +53,7 @@ class BinarySearchTree{
         }
     }
 
-    Node root;
+    private Node root;
 
     void insert(int key, char data){
         root = insert(root, key, data);
@@ -60,11 +61,20 @@ class BinarySearchTree{
 
     private Node insert(Node root, int key, char data){
         if (root == null) return new Node(key, data);
+        root.left.p = root;
+        root.right.p = root;
         if (root.key - key >= 0)
             root.left = insert(root.left, key, data);
         else
             root.right = insert(root.right, key, data);
         return root;
+    }
+
+    private void transplant(BinarySearchTree t, Node u, Node v){
+        if (u.p == null) t.root = v;
+        if (u == u.p.left) u.p.left = v;
+        else u.p.right = v;
+        if (v != null) v.p = u.p;
     }
 
     void delete(int key){
