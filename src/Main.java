@@ -73,23 +73,30 @@ class BinarySearchTree{
 
     private Node delete(Node root, int key){
         if (root == null) return null;
-        if (root.key - key > 0)
+        if (root.key > key)
             root.left = delete(root.left, key);
-        if (root.key - key < 0)
+        if (root.key < key)
             root.right = delete(root.right, key);
         else{ //found node to remove
             if (root.left == null) return root.right;
             if (root.right == null) return root.left;
             //two children
-            root.key = getMax(root.left);
-            root.left = delete(root.left, root.key);
+            Node temp = getMax(root.left);
+            root.key = temp.key;
+            root.left = deleteMax(root.left);
         }
         return root;
     }
 
-    private int getMax(Node root){
-        if (root.right == null) return root.key;
+    private Node getMax(Node root){
+        if (root.right == null) return root;
         return getMax(root.right);
+    }
+
+    private Node deleteMax(Node root){
+        if (root.right == null) return root.left;
+        root.right = deleteMax(root.right);
+        return root;
     }
 
     void inorder(){
