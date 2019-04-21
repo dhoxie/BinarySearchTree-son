@@ -17,7 +17,7 @@ class Main {
                     }
                     break;
                 case "DELETE":
-                    while (ls.hasNext()){
+                    while (ls.hasNextInt()){
                         tree.delete(ls.nextInt());
                     }
                     break;
