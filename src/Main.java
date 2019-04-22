@@ -13,22 +13,22 @@ class Main {
             switch (token.toUpperCase()){
                 case "INSERT":
                     while (ls.hasNext()){
-                        tree.insert(ls.nextInt(), ls.next().charAt(0));
+                        tree.insert(tree, ls.nextInt(), ls.next().charAt(0));
                     }
                     break;
                 case "DELETE":
                     while (ls.hasNextInt()){
-                        tree.delete(ls.nextInt());
+                        tree.delete(tree, ls.nextInt());
                     }
                     break;
                 case "PREORDER":
-                    tree.preorder();
+                    tree.preorder(tree);
                     break;
                 case "INORDER":
-                    tree.inorder();
+                    tree.inorder(tree);
                     break;
                 case "POSTORDER":
-                    tree.postorder();
+                    tree.postorder(tree);
                     break;
                 case "EXIT":
                     ls.close();
@@ -55,8 +55,8 @@ class BinarySearchTree{
 
     private Node root;
 
-    void insert(int key, char data){
-        root = insert(root, key, data);
+    void insert(BinarySearchTree tree, int key, char data){
+        tree.root = insert(tree.root, key, data);
     }
 
     private Node insert(Node root, int key, char data){
@@ -77,8 +77,8 @@ class BinarySearchTree{
         if (v != null) v.p = u.p;
     }
 
-    void delete(int key){
-        root = delete(root, key);
+    void delete(BinarySearchTree tree, int key){
+        tree.root = delete(tree.root, key);
     }
 
     private Node delete(Node root, int key){
@@ -109,8 +109,8 @@ class BinarySearchTree{
         return root;
     }
 
-    void inorder(){
-        inorder(root);
+    void inorder(BinarySearchTree tree){
+        inorder(tree.root);
         System.out.println();
     }
 
@@ -121,8 +121,8 @@ class BinarySearchTree{
         inorder(root.right);
     }
 
-    void postorder(){
-        postorder(root);
+    void postorder(BinarySearchTree tree){
+        postorder(tree.root);
         System.out.println();
     }
 
@@ -133,8 +133,8 @@ class BinarySearchTree{
         System.out.print(root.data);
     }
 
-    void preorder(){
-        preorder(root);
+    void preorder(BinarySearchTree tree){
+        preorder(tree.root);
         System.out.println();
     }
 
