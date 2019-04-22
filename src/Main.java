@@ -13,22 +13,22 @@ class Main {
             switch (token.toUpperCase()){
                 case "INSERT":
                     while (ls.hasNext()){
-                        tree.insert(tree, ls.nextInt(), ls.next().charAt(0));
+                        tree.insert(ls.nextInt(), ls.next().charAt(0));
                     }
                     break;
                 case "DELETE":
                     while (ls.hasNextInt()){
-                        tree.delete(tree, ls.nextInt());
+                        tree.delete(ls.nextInt());
                     }
                     break;
                 case "PREORDER":
-                    tree.preorder(tree);
+                    tree.preorder();
                     break;
                 case "INORDER":
-                    tree.inorder(tree);
+                    tree.inorder();
                     break;
                 case "POSTORDER":
-                    tree.postorder(tree);
+                    tree.postorder();
                     break;
                 case "EXIT":
                     ls.close();
@@ -45,7 +45,6 @@ class BinarySearchTree{
         private char data;
         private int key;
         Node left, right;
-        Node p;
 
         Node(int k, char d){
             key = k;
@@ -55,14 +54,12 @@ class BinarySearchTree{
 
     private Node root;
 
-    void insert(BinarySearchTree tree, int key, char data){
-        tree.root = insert(tree.root, key, data);
+    void insert(int key, char data){
+        root = insert(root, key, data);
     }
 
     private Node insert(Node root, int key, char data){
         if (root == null) return new Node(key, data);
-        root.left.p = root;
-        root.right.p = root;
         if (root.key - key >= 0)
             root.left = insert(root.left, key, data);
         else
@@ -70,15 +67,8 @@ class BinarySearchTree{
         return root;
     }
 
-    private void transplant(BinarySearchTree t, Node u, Node v){
-        if (u.p == null) t.root = v;
-        if (u == u.p.left) u.p.left = v;
-        else u.p.right = v;
-        if (v != null) v.p = u.p;
-    }
-
-    void delete(BinarySearchTree tree, int key){
-        tree.root = delete(tree.root, key);
+    void delete(int key){
+        root = delete(root, key);
     }
 
     private Node delete(Node root, int key){
@@ -109,8 +99,8 @@ class BinarySearchTree{
         return root;
     }
 
-    void inorder(BinarySearchTree tree){
-        inorder(tree.root);
+    void inorder(){
+        inorder(root);
         System.out.println();
     }
 
@@ -121,8 +111,8 @@ class BinarySearchTree{
         inorder(root.right);
     }
 
-    void postorder(BinarySearchTree tree){
-        postorder(tree.root);
+    void postorder(){
+        postorder(root);
         System.out.println();
     }
 
@@ -133,8 +123,8 @@ class BinarySearchTree{
         System.out.print(root.data);
     }
 
-    void preorder(BinarySearchTree tree){
-        preorder(tree.root);
+    void preorder(){
+        preorder(root);
         System.out.println();
     }
 
