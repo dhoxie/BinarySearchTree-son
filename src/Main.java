@@ -18,7 +18,7 @@ class Main {
                     break;
                 case "DELETE":
                     while (ls.hasNextInt()){
-                        tree.delete(ls.nextInt());
+                        tree.treeDelete(ls.nextInt());
                     }
                     break;
                 case "PREORDER":
@@ -44,7 +44,7 @@ class BinarySearchTree{
     class Node{
         private char data;
         private int key;
-        Node left, right;
+        Node left, right, p;
 
         Node(int k, char d){
             key = k;
@@ -55,7 +55,7 @@ class BinarySearchTree{
     private Node root;
 
     void insert(int key, char data){
-        root = insert(root, key, data);
+        this.root = insert(root, key, data);
     }
 
     private Node insert(Node root, int key, char data){
@@ -97,6 +97,37 @@ class BinarySearchTree{
         if (root.right == null) return root.left;
         root.right = deleteMax(root.right);
         return root;
+    }
+
+    //need to find z's node first
+    void treeDelete(int key){
+        Node z = treeSearch(root, key);
+        if (z.left == null) transplant(z, z.right);
+        if (z.right == null) transplant(z, z.left);
+        else{
+            Node y = getMax(z.left); // y is z's successor
+            if (y.p != z){
+                transplant(y, y.right);
+                y.right = z.right;
+                y.right.p = y;
+            }
+            transplant(z, y);
+            y.left = z.left;
+            y.left.p = y;
+        }
+    }
+
+    private Node treeSearch(Node root, int key){
+        if (root == null || key == root.key) return root;
+        if (key < root.key) return treeSearch(root.left, key);
+        return treeSearch(root.right, key);
+    }
+
+    private void transplant(Node u, Node v){
+        if (u.p == null) root = v;
+        else if (u == u.p.left) u.p.left = v;
+        else u.p.right = v;
+        if (v != null) v.p = u.p;
     }
 
     void inorder(){
