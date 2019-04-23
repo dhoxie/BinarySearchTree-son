@@ -18,7 +18,7 @@ class Main {
                     break;
                 case "DELETE":
                     while (ls.hasNextInt()){
-                        tree.treeDelete(ls.nextInt());
+                        tree.delete(ls.nextInt());
                     }
                     break;
                 case "PREORDER":
@@ -71,21 +71,23 @@ class BinarySearchTree{
         root = delete(root, key);
     }
 
-    private Node delete(Node root, int key){
-        if (root == null) return null;
-        if (root.key > key)
-            root.left = delete(root.left, key);
-        if (root.key < key)
-            root.right = delete(root.right, key);
+    private Node delete(Node rt, int key){
+        if (rt == null) return null;
+        if (rt.key > key)
+            rt.left = delete(rt.left, key);
+        else if (rt.key < key)
+            rt.right = delete(rt.right, key);
         else{ //found node to remove
-            if (root.left == null) return root.right;
-            if (root.right == null) return root.left;
+            if (rt.left == null) return rt.right;
+            else if (rt.right == null) return rt.left;
             //two children
-            Node temp = getMax(root.left);
-            root.key = temp.key;
-            root.left = deleteMax(root.left);
+            else {
+                Node temp = getMax(rt.left);
+                rt.key = temp.key;
+                rt.left = deleteMax(rt.left);
+            }
         }
-        return root;
+        return rt;
     }
 
     private Node getMax(Node root){
@@ -102,10 +104,10 @@ class BinarySearchTree{
     //need to find z's node first
     void treeDelete(int key){
         Node z = treeSearch(root, key);
-        if (z.left == null) transplant(z, z.right);
-        if (z.right == null) transplant(z, z.left);
+        if (z.left == null && z.right != null) transplant(z, z.right);
+        else if (z.right == null && z.left != null) transplant(z, z.left);
         else{
-            Node y = getMax(z.left); // y is z's successor
+            Node y = treeMinimum(z.right); // y is z's successor
             if (y.p != z){
                 transplant(y, y.right);
                 y.right = z.right;
@@ -115,6 +117,11 @@ class BinarySearchTree{
             y.left = z.left;
             y.left.p = y;
         }
+    }
+
+    private Node treeMinimum(Node x){
+        while (x.left != null) x = x.left;
+        return x;
     }
 
     private Node treeSearch(Node root, int key){
