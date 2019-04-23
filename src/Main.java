@@ -101,42 +101,6 @@ class BinarySearchTree{
         return root;
     }
 
-    //need to find z's node first
-    void treeDelete(int key){
-        Node z = treeSearch(root, key);
-        if (z.left == null && z.right != null) transplant(z, z.right);
-        else if (z.right == null && z.left != null) transplant(z, z.left);
-        else{
-            Node y = treeMinimum(z.right); // y is z's successor
-            if (y.p != z){
-                transplant(y, y.right);
-                y.right = z.right;
-                y.right.p = y;
-            }
-            transplant(z, y);
-            y.left = z.left;
-            y.left.p = y;
-        }
-    }
-
-    private Node treeMinimum(Node x){
-        while (x.left != null) x = x.left;
-        return x;
-    }
-
-    private Node treeSearch(Node root, int key){
-        if (root == null || key == root.key) return root;
-        if (key < root.key) return treeSearch(root.left, key);
-        return treeSearch(root.right, key);
-    }
-
-    private void transplant(Node u, Node v){
-        if (u.p == null) root = v;
-        else if (u == u.p.left) u.p.left = v;
-        else u.p.right = v;
-        if (v != null) v.p = u.p;
-    }
-
     void inorder(){
         inorder(root);
         System.out.println();
