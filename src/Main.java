@@ -81,24 +81,35 @@ class BinarySearchTree{
             if (rt.left == null) return rt.right;
             else if (rt.right == null) return rt.left;
             //two children
-            else {
-                Node temp = getMax(rt.left);
-                rt.key = temp.key;
-                rt.left = deleteMax(rt.left);
-            }
+            rt.key = minValue(rt.right);
+            rt.right = delete(rt.right, rt.key);
+            //else {
+            //    Node temp = getMax(rt.left);
+            //    rt = temp;
+            //    rt.left = deleteMax(rt.left);
+            //}
         }
         return rt;
     }
 
-    private Node getMax(Node root){
-        if (root.right == null) return root;
-        return getMax(root.right);
+    private int minValue(Node rt){
+        while (rt.left != null){
+            rt = rt.left;
+        }
+        return rt.key;
     }
 
-    private Node deleteMax(Node root){
-        if (root.right == null) return root.left;
-        root.right = deleteMax(root.right);
-        return root;
+    private Node getMax(Node rt){
+        if (rt.right == null) return rt;
+        return getMax(rt.right);
+    }
+
+    private Node deleteMax(Node rt){
+        if (rt.right == null) {
+            if (rt.left != null) return rt.left;
+        }
+        else rt.right = deleteMax(rt.right);
+        return rt;
     }
 
     void inorder(){
